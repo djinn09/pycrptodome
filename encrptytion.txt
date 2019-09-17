@@ -1,0 +1,94 @@
+# >>> USING PYCRYPTO
+# library  pip install pycrypto
+# from Crypto.Cipher import AES
+# import random, string, base64
+#
+# key = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for x in range(32))
+# iv = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for x in range(16))
+#
+# print(key, len(key))
+#
+# print(iv, len(iv))
+#
+# enc_s = AES.new(key, AES.MODE_CFB, iv)
+# cipher_text = enc_s.encrypt('this is a super important message')
+# encoded_cipher_text = base64.b32encode(cipher_text)
+# print(encoded_cipher_text)
+#
+# decryption_suite = AES.new(key, AES.MODE_CFB, iv)
+# plain_text = decryption_suite.decrypt(base64.b32decode(encoded_cipher_text))
+# print(plain_text)
+
+
+# >>> USING PYCRPYTODOM
+# pip install pycryptodome
+# from Crypto.Random import get_random_bytes
+# key = get_random_bytes(32) # 32 bytes * 8 = 256 bits (1 byte = 8 bits)
+# print(key)
+
+# file_out = open("key.pem", "wb") # wb = write bytes
+# file_out.write(key)
+# file_out.close()
+from Crypto.Cipher import AES
+
+# from Crypto.Util.Padding import pad, unpad
+# >>>>> FILE ENCRPYTION
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# with open("/home/vegito/Desktop/2. What is a word embedding.mp4", "rb") as file:
+#     data = file.read()  # Must be a bytes object
+# output_file = "/home/vegito/Desktop/encrypted.bin"  # Output file
+#
+key = b'\xce\xf2\x88m\x9b\xe9\xdd\xb0Z\xe3z\xd3\x1d2\x93;R\x11\x1e2\xd9\x160\xf5\xdde-b\xf8\\\x03n'
+file_in = open("key.pem", "rb")  # Read bytes
+key_from_file = file_in.read()  # This key should be the same
+file_in.close()
+assert key == key_from_file
+#
+# # Create cipher object and encrypt the data
+# cipher = AES.new(key, AES.MODE_CBC)  # Create a AES cipher object with the key using the mode CBC
+# ciphered_data = cipher.encrypt(pad(data, AES.block_size))  # Pad the input data and then encrypt
+# file_out = open(output_file, "wb")  # Open file to write bytes
+# file_out.write(cipher.iv)  # Write the iv to the output file (will be required for decryption)
+# file_out.write(ciphered_data)  # Write the varying length cipher text to the file (this is the encrypted data)
+# file_out.close()
+# iv = len(cipher.iv)
+# # Read the data from the file
+# file_in = open(output_file, 'rb')  # Open the file to read bytes
+# iv = file_in.read(iv)  # Read the iv out - this is 16 bytes long
+# ciphered_data = file_in.read()  # Read the rest of the data
+# file_in.close()
+# #
+# cipher = AES.new(key, AES.MODE_CBC, iv=iv)  # Setup cipher
+# original_data = unpad(cipher.decrypt(ciphered_data), AES.block_size)  # Decrypt and then up-pad the result
+#
+# out = "/home/vegito/Desktop/a.mp4"
+#
+# with open(out, "wb") as file:
+#     file.write(original_data)
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+# >>>> STRING ENCRPYTION
+# import base64
+#
+# data_to_encrypt = "This is plain text!"  # This is your data
+# data = data_to_encrypt.encode('utf-8')
+# cipher_encrypt = AES.new(key, AES.MODE_CFB)
+# ciphered_bytes = cipher_encrypt.encrypt(data)
+#
+# # This is now our data
+# iv = cipher_encrypt.iv
+# ciphered_data = ciphered_bytes
+# ciphered_data = base64.b32encode(ciphered_data)
+# print(ciphered_data)
+# # From here we now assume that we do not know data_to_encrypt or data (we will use it for proof afterwards
+# # We do know the iv, data and the key you have stored / generate
+#
+# # === Decrypt ===
+#
+# # Create the cipher object and decrypt the data
+# cipher_decrypt = AES.new(key, AES.MODE_CFB, iv=iv)
+# deciphered_bytes = cipher_decrypt.decrypt(base64.b32decode(ciphered_data))
+# print(deciphered_bytes)
+# # Convert the bytes object back to the string
+# decrypted_data = deciphered_bytes.decode('utf-8')
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
